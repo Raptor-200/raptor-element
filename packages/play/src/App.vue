@@ -2,7 +2,7 @@
 </script>
 
 <template>
-  <ra-button />
+  <ra-button type="primary" size="small">test</ra-button>
 </template>
 
 <style scoped>

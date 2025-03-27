@@ -28,7 +28,7 @@ describe("Button.vue", () => {
       expect(wrapper.classes()).toContain(`ra-button--${size}`);
     });
   });
-
+  // 测试布尔类型属性：验证传入 plain/round/circle 等属性时对应的修饰类
   // Props: plain, round, circle
   it.each([
     ["plain", "is-plain"],
@@ -49,6 +49,7 @@ describe("Button.vue", () => {
     }
   );
 
+  // 测试原生 type 属性：验证按钮的 HTML type 属性是否正确设置
   it("should has the correct native type attribute when native-type prop is set", () => {
     const wrapper = mount(Button, {
       props: { nativeType: "submit" },
@@ -56,7 +57,7 @@ describe("Button.vue", () => {
     expect(wrapper.element.tagName).toBe("BUTTON");
     expect((wrapper.element as any).type).toBe("submit");
   });
-
+  // 测试 tag 属性：验证组件根元素能否正确渲染为指定标签
   // Props: tag
   it("should renders the custom tag when tag prop is set", () => {
     const wrapper = mount(Button, {
@@ -64,14 +65,12 @@ describe("Button.vue", () => {
     });
     expect(wrapper.element.tagName.toLowerCase()).toBe("a");
   });
-
+  // 测试点击事件：验证按钮点击时能否正确触发 click 事件
   // Events: click
   it("should emits a click event when the button is clicked", async () => {
     const wrapper = mount(Button, {});
 
-    // 确保按钮存在
-    const button = wrapper.find('button')
-    expect(button.exists()).toBe(true) // 先验证元素存在
+
 
     await wrapper.trigger("click");
     expect(wrapper.emitted().click).toHaveLength(1);

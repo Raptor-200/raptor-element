@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "dev": "pnpm --filter @raptor-element/play dev",
-    "docs": "pnpm --filter @raptor-element/docs dev",
+    "docs:dev": "pnpm --filter @raptor-element/docs dev",
     "docs:build": "pnpm --filter @raptor-element/docs build",
     "test": "pnpm --filter @raptor-element/components test"
   },
