@@ -1,7 +1,7 @@
 //it 和test理解：功能上是一样的，语义上不同。it是测试用例，test是测试套件。
 //it详细的表现，test大的功能点。
 //it和test的区别：it可以嵌套test，test不能嵌套it  。
-import { describe, it, expect } from "vitest";
+import { describe, it, expect, vi } from "vitest";
 import { mount } from "@vue/test-utils";
 
 import Button from "./Button.vue";
@@ -57,6 +57,32 @@ describe("Button.vue", () => {
     expect(wrapper.element.tagName).toBe("BUTTON");
     expect((wrapper.element as any).type).toBe("submit");
   });
+
+  // Test the click event with and without throttle
+  it.each([
+    ["withoutThrottle", false],
+    ["withThrottle", true],
+  ])("emits click event %s", async (_, useThrottle) => {
+    const clickSpy = vi.fn();
+    const wrapper = mount(() => (
+      <Button
+        onClick={clickSpy}
+        {...{
+          useThrottle,
+          throttleDuration: 400,
+        }}
+      />
+    ));
+
+    await wrapper.get("button").trigger("click");
+    await wrapper.get("button").trigger("click");
+    await wrapper.get("button").trigger("click");
+    expect(clickSpy).toBeCalledTimes(useThrottle ? 1 : 3);
+  });
+
+
+
+
   // 测试 tag 属性：验证组件根元素能否正确渲染为指定标签
   // Props: tag
   it("should renders the custom tag when tag prop is set", () => {
