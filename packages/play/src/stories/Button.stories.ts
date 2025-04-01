@@ -2,7 +2,7 @@ import type { Meta, StoryObj, ArgTypes } from "@storybook/vue3";
 import { fn, within, userEvent, expect, clearAllMocks } from "@storybook/test";
 import { set } from "lodash-es";
 
-import { RaButton } from "raptor-element";
+import { RaButton, RaButtonGroup } from "raptor-element";
 
 
 
@@ -178,4 +178,57 @@ export const Circle: Story = {
     expect(args.onClick).toHaveBeenCalled();
   },
 };
+
+
+export const Group: Story & { args: { content1: string; content2: string } } = {
+  argTypes: {
+    groupType: {
+      control: { type: "select" },
+      options: ["primary", "success", "warning", "danger", "info", ""],
+    },
+    groupSize: {
+      control: { type: "select" },
+      options: ["large", "default", "small", ""],
+    },
+    groupDisabled: {
+      control: "boolean",
+    },
+    content1: {
+      control: { type: "text" },
+      defaultValue: "Button1",
+    },
+    content2: {
+      control: { type: "text" },
+      defaultValue: "Button2",
+    },
+  },
+  args: {
+    round: true,
+    content1: "Button1",
+    content2: "Button2",
+  },
+  render: (args) => ({
+    components: { RaButton, RaButtonGroup },
+    setup() {
+      return { args };
+    },
+    template: container(`
+       <ra-button-group :type="args.groupType" :size="args.groupSize" :disabled="args.groupDisabled">
+         <ra-button v-bind="args">{{args.content1}}</ra-button>
+         <ra-button v-bind="args">{{args.content2}}</ra-button>
+       </ra-button-group>
+    `),
+  }),
+  play: async ({ canvasElement, args, step }) => {
+    const canvas = within(canvasElement);
+    await step("click btn1", async () => {
+      await userEvent.click(canvas.getByText("Button1"));
+    });
+    await step("click btn2", async () => {
+      await userEvent.click(canvas.getByText("Button2"));
+    });
+    expect(args.onClick).toHaveBeenCalled();
+  },
+};
+
 export default meta;

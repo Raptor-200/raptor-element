@@ -7,9 +7,10 @@
 *style.css        样式
 *constants.ts     常量
 */ 
-  import { ref ,computed}from "vue";
+  import { ref, computed, inject}from "vue";
   import type {ButtonProps, ButtonEmits,ButtonInstance} from './types';
   import {throttle} from 'lodash-es';
+  import { BUTTON_GROUP_CTX_KEY } from "./contants";
   import  RaIcon from "../Icon/Icon.vue";
   
   defineOptions({
@@ -24,7 +25,11 @@
   })
   const emits = defineEmits<ButtonEmits>();
   const slots = defineSlots();
+  const ctx = inject(BUTTON_GROUP_CTX_KEY, void 0);
   const _ref = ref<HTMLButtonElement>();
+  const size= computed(() => ctx?.size ?? props?.size ?? "");
+  const type= computed(() => ctx?.type ?? props?.type ?? "");
+  const disabled= computed(() => ctx?.disabled|| props?.disabled|| false);
   const iconStyle = computed(() => ({marginRight: slots.default ? "6px" : "0px",}));
   const handleBtnClick = (e: MouseEvent) => emits('click', e);
   const handleBtnClickThrottle = throttle(handleBtnClick, props.throttleDuration,{trailing: false});
