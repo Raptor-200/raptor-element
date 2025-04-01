@@ -15,14 +15,14 @@
   "license": "ISC",
   "packageManager": "pnpm@10.6.5",
   "devDependencies": {
+    "@fortawesome/fontawesome-svg-core": "^6.5.2",
+    "@fortawesome/free-solid-svg-icons": "^6.5.2",
+    "@fortawesome/vue-fontawesome": "^3.0.8",
     "@types/lodash-es": "^4.17.12",
     "@types/node": "^20.11.20",
     "@vitejs/plugin-vue": "^5.0.4",
     "@vitejs/plugin-vue-jsx": "^3.1.0",
     "@vue/tsconfig": "^0.5.1",
-    "@fortawesome/fontawesome-svg-core": "^6.5.2",
-    "@fortawesome/free-solid-svg-icons": "^6.5.2",
-    "@fortawesome/vue-fontawesome": "^3.0.8",
     "postcss-color-mix": "^1.1.0",
     "postcss-each": "^1.1.0",
     "postcss-each-variables": "^0.3.0",
@@ -30,15 +30,15 @@
     "postcss-nested": "^6.0.1",
     "typescript": "^5.2.2",
     "vite": "^5.1.4",
-    "vitest": "^1.4.0",
+    "vitest": "^1.6.1",
     "vue-tsc": "^1.8.27"
   },
   "dependencies": {
-    "lodash-es": "^4.17.21",
-    "vue": "^3.4.19",
-    "raptor-element": "workspace:*",
     "@raptor-element/hooks": "workspace:*",
+    "@raptor-element/theme": "workspace:*",
     "@raptor-element/utils": "workspace:*",
-    "@raptor-element/theme": "workspace:*"
+    "lodash-es": "^4.17.21",
+    "raptor-element": "workspace:*",
+    "vue": "^3.4.19"
   }
 }
