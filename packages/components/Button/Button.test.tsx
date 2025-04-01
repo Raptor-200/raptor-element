@@ -1,10 +1,11 @@
 //it 和test理解：功能上是一样的，语义上不同。it是测试用例，test是测试套件。
 //it详细的表现，test大的功能点。
 //it和test的区别：it可以嵌套test，test不能嵌套it  。
-import { describe, it, expect, vi } from "vitest";
+import { describe, it, test, expect, vi } from "vitest";
 import { mount } from "@vue/test-utils";
 
 import Button from "./Button.vue";
+import Icon from "../Icon/Icon.vue";
 
 describe("Button.vue", () => {
   // Props: type
@@ -95,10 +96,113 @@ describe("Button.vue", () => {
   // Events: click
   it("should emits a click event when the button is clicked", async () => {
     const wrapper = mount(Button, {});
-
-
-
     await wrapper.trigger("click");
     expect(wrapper.emitted().click).toHaveLength(1);
+  });
+
+  // Exception Handling: loading state
+  it("should display loading icon and not emit click event when button is loading", async () => {
+    const wrapper = mount(Button, {
+      props: { loading: true },
+      global: {
+        stubs: ["RaIcon"],
+      },
+    });
+    const iconElement = wrapper.findComponent(Icon);
+
+    expect(wrapper.find(".loading-icon").exists()).toBe(true);
+    expect(iconElement.exists()).toBeTruthy();
+    expect(iconElement.attributes("icon")).toBe("spinner");
+    await wrapper.trigger("click");
+    expect(wrapper.emitted("click")).toBeUndefined();
+  });
+
+
+  const onClick = vi.fn();
+
+  test("basic button", async () => {
+    const wrapper = mount(() => (
+      <Button type="primary" {...{ onClick }}>
+        button content
+      </Button>
+    ));
+
+    // class
+    expect(wrapper.classes()).toContain("ra-button--primary");
+
+    // slot
+    expect(wrapper.get("button").text()).toBe("button content");
+
+    // events
+    await wrapper.get("button").trigger("click");
+    expect(onClick).toHaveBeenCalledOnce();
+  });
+
+  test("disabled button", async () => {
+    const wrapper = mount(() => (
+      <Button disabled {...{ onClick }}>
+        disabled button
+      </Button>
+    ));
+
+    // class
+    expect(wrapper.classes()).toContain("is-disabled");
+
+    // attrs
+    expect(wrapper.attributes("disabled")).toBeDefined();
+    expect(wrapper.find("button").element.disabled).toBeTruthy();
+
+    // events
+    await wrapper.get("button").trigger("click");
+    expect(onClick).toHaveBeenCalledOnce();
+    expect(wrapper.emitted("click")).toBeUndefined();
+  });
+
+  test("loading button", () => {
+    const wrapper = mount(Button, {
+      props: {
+        loading: true,
+      },
+      slots: {
+        default: "loading button",
+      },
+      global: {
+        stubs: ["RaIcon"],
+      },
+    });
+
+    // class
+    expect(wrapper.classes()).toContain("is-loading");
+
+    // attrs
+    expect(wrapper.attributes("disabled")).toBeDefined();
+    expect(wrapper.find("button").element.disabled).toBeTruthy();
+
+    // events
+    wrapper.get("button").trigger("click");
+    expect(wrapper.emitted()).not.toHaveProperty("click");
+
+    // icon
+    const iconElement = wrapper.findComponent(Icon);
+    expect(iconElement.exists()).toBeTruthy();
+    expect(iconElement.attributes("icon")).toBe("spinner");
+  });
+
+  test("icon button", () => {
+    const wrapper = mount(Button, {
+      props: {
+        icon: "arrow-up",
+      },
+      slots: {
+        default: "icon button",
+      },
+      global: {
+        stubs: ["RaIcon"],
+      },
+    });
+
+    const iconElement = wrapper.findComponent(Icon);
+    expect(iconElement.exists()).toBeTruthy();
+    expect(iconElement.attributes("icon")).toBe("arrow-up");
   });
 });
