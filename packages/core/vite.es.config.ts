@@ -4,6 +4,30 @@ import { resolve } from "path";
 import dts from 'vite-plugin-dts';
 //为什么不引入jsx？ 我们的jsx只在测试里用到，我们所有的组件开发都是用的vue的SFC，所以没必要引入。
 
+
+const COMP_NAMES = [
+  "Alert",
+  "Button",
+  "Collapse",
+  "Dropdown",
+  "Form",
+  "Icon",
+  "Input",
+  "Loading",
+  "Message",
+  "MessageBox",
+  "Notification",
+  "Overlay",
+  "Popconfirm",
+  "Select",
+  "Switch",
+  "Tooltip",
+  "Upload",
+] as const;
+
+
+
+
 export default defineConfig({
   plugins: [vue(), dts({
     tsconfigPath: "../../tsconfig.build.json",
@@ -33,6 +57,25 @@ export default defineConfig({
             return 'index.css'; // 输出为index.css
           }
           return assetInfo.name as string; // 否则输出原名称
+        },
+        manualChunks(id) { // 把modules、hooks、utils分包，再把所有组件都分包，这里把组件定义进数组遍历
+          if (id.includes("node_modules")) {
+            return "vendor";
+          }
+          if (id.includes("/packages/hooks")) {
+            return "hooks";
+          }
+          if (
+            id.includes("/packages/utils")
+          ) {
+            return "utils";
+          }
+
+          for (const item of COMP_NAMES) { // 遍历组件数组
+            if (id.includes(`/packages/components/${item}`)) { // 如果id包含组件名称
+              return item; // 返回组件
+            }
+          }
         }
 
       },
