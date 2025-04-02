@@ -2,9 +2,11 @@
   "name": "raptor-element",
   "version": "1.0.0",
   "description": "",
+  "type": "module",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build-umd": "vite build --config vite.umd.config.ts",
+    "build-es": "vite build --config vite.es.config.ts"
   },
   "dependencies": {
     "@raptor-element/components": "workspace:*"
@@ -12,5 +14,8 @@
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "packageManager": "pnpm@10.6.5"
+  "packageManager": "pnpm@10.6.5",
+  "devDependencies": {
+    "vite-plugin-dts": "^3.9.1"
+  }
 }
