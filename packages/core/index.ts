@@ -8,5 +8,5 @@ import '@raptor-element/theme/index.css';
 library.add(fas);
 const installer = makeInstaller(components);
 
-export * from "@raptor-element/components";
+export * from "../components";
 export default installer;

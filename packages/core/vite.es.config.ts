@@ -1,30 +1,39 @@
 import { defineConfig } from 'vite';
-import vue from '@vitejs/plugin-vue';
 import { resolve } from "path";
+import { filter, map } from 'lodash-es';
+import { readdirSync } from 'fs';
+import vue from '@vitejs/plugin-vue';
 import dts from 'vite-plugin-dts';
 //为什么不引入jsx？ 我们的jsx只在测试里用到，我们所有的组件开发都是用的vue的SFC，所以没必要引入。
 
 
-const COMP_NAMES = [
-  "Alert",
-  "Button",
-  "Collapse",
-  "Dropdown",
-  "Form",
-  "Icon",
-  "Input",
-  "Loading",
-  "Message",
-  "MessageBox",
-  "Notification",
-  "Overlay",
-  "Popconfirm",
-  "Select",
-  "Switch",
-  "Tooltip",
-  "Upload",
-] as const;
+// const COMP_NAMES = [
+//   "Alert",
+//   "Button",
+//   "Collapse",
+//   "Dropdown",
+//   "Form",
+//   "Icon",
+//   "Input",
+//   "Loading",
+//   "Message",
+//   "MessageBox",
+//   "Notification",
+//   "Overlay",
+//   "Popconfirm",
+//   "Select",
+//   "Switch",
+//   "Tooltip",
+//   "Upload",
+// ] as const;
+function getDirectoriesSync(basePath: string) {
+  const entries = readdirSync(basePath, { withFileTypes: true });
 
+  return map(
+    filter(entries, (entry) => entry.isDirectory()),
+    (entry) => entry.name
+  );
+}
 
 
 
@@ -71,9 +80,9 @@ export default defineConfig({
             return "utils";
           }
 
-          for (const item of COMP_NAMES) { // 遍历组件数组
-            if (id.includes(`/packages/components/${item}`)) { // 如果id包含组件名称
-              return item; // 返回组件
+          for (const dirName of getDirectoriesSync("../components")) { // 遍历组件数组
+            if (id.includes(`/packages/components/${dirName}`)) { // 如果id包含组件名称
+              return dirName; // 返回组件
             }
           }
         }
