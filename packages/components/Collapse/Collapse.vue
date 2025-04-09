@@ -1,19 +1,20 @@
 <script setup lang="ts">
-import type { CollapseProps, CollapseEmits,CollapseItemName } from "./types";
-import { ref,provide,watch ,watchEffect} from "vue";
+import type { CollapseProps, CollapseEmits, CollapseItemName } from "./types";
+import { ref, provide, watch, watchEffect } from "vue";
+import { debugWarn } from "@raptor-element/utils";
 import { COLLAPSE_CTX_KEY } from "./constants";
 
-
+const COMP_NAME = "RaCollapse" as const;
 
 defineOptions({
-  name: "RaCollapse",
+  name: COMP_NAME,
 })
 
 const props = defineProps<CollapseProps>()
 const emits = defineEmits<CollapseEmits>()
-const activeNames = ref(props.modelValue )
+const activeNames = ref(props.modelValue)
 
-if(props.accordion && activeNames.value.length > 1) {
+if (props.accordion && activeNames.value.length > 1) {
   console.warn("accordion mode should only have one active item");
 }
 
@@ -44,7 +45,7 @@ function updateActiveNames(newNames: CollapseItemName[]) {
 
 watchEffect(() => {
   if (props.accordion && activeNames.value.length > 1) {
-    console.warn("accordion mode should only have one active item");
+    debugWarn(COMP_NAME, "accordion mode should only have one active item");
   }
 });
 
@@ -65,6 +66,6 @@ provide(COLLAPSE_CTX_KEY, {
   </div>
 </template>
 
-<style  scoped>
+<style scoped>
 @import './style.css';
 </style>
