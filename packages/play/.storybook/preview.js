@@ -1,4 +1,4 @@
-import "raptor-element/dist/index.css";
+import "raptor-element/dist/theme/index.css";
 
 /** @type { import('@storybook/vue3').Preview } */
 const preview = {

@@ -1,5 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/vue3";
 import { RaCollapse, RaCollapseItem } from "raptor-element";
+import 'raptor-element/dist/theme/Collapse.css';
+
 
 type Story = StoryObj<typeof RaCollapse>;
 

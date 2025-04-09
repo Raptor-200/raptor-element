@@ -3,7 +3,7 @@ import { fn, within, userEvent, expect, clearAllMocks } from "@storybook/test";
 import { set } from "lodash-es";
 
 import { RaButton, RaButtonGroup } from "raptor-element";
-
+import "raptor-element/dist/theme/Button.css";
 
 
 type Story = StoryObj<typeof RaButton> & { argTypes?: ArgTypes };
